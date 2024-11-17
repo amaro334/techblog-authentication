@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: auth-service-tk-ingress-secure
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Path(`/auth/{[0aA-zZ9]+}`) || Path(`/auth/{[aA0-zZ9]+}/{[aA0-zZ9]+}`)
+    kind: Rule
+    services:
+    - name: auth-service-mysql
+      port: 80
+  tls:
+    secretName: fedgen-ml-tls
